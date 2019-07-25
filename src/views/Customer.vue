@@ -42,7 +42,7 @@
         this.bookOrder.bookDate = '';
       },
       onSubmit() {
-
+        this.$store.dispatch('patchPackage', this.bookOrder);
       }
     }
   }

@@ -18,18 +18,8 @@
           prop="phone">
         </el-table-column>
         <el-table-column
-          prop="status"
           label="状态"
-          width="100"
-          :filters="filterConditions"
-          :filter-method="filterTag"
-          filter-placement="bottom-end">
-          <template slot-scope="scope">
-            <el-tag
-              :type="scope.row.status === '家' ? 'primary' : 'success'"
-              disable-transitions>{{scope.row.status}}
-            </el-tag>
-          </template>
+          prop="status">
         </el-table-column>
         <el-table-column
           label="预约时间"
@@ -38,6 +28,27 @@
         <el-table-column
           align="right">
           <template slot="header" slot-scope="scope">
+            <el-button
+              size="mini"
+              type="primary"
+              @click="showAll">All
+            </el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="filterNotTake">未取件
+            </el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="filterBooked">已预约
+            </el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              @click="filterTake">已取件
+            </el-button>
+
             <el-button
               size="mini"
               type="primary"
@@ -78,26 +89,22 @@
 </template>
 
 <script>
+
   export default {
     name: "Manager",
     data() {
       return {
         dialogFormVisible: false,
-        tableData: [
-          {
-            orderId: 1,
-            orderNumber: '20160502',
-            receiver: '王小虎',
-            phone: '12345612312',
-            status: '未取件',
-            bookDate: '',
-          }
-        ],
-        filterConditions: [
-          {text: '未取件', value: 1},
-          {text: '已预约', value: 2},
-          {text: '未预约', value: 3},
-        ],
+        // tableData: [
+        //   {
+        //     orderId: 1,
+        //     orderNumber: '20160502',
+        //     receiver: '王小虎',
+        //     phone: '12345612312',
+        //     status: '未取件',
+        //     bookDate: '',
+        //   }
+        // ],
         form: {
           orderNumber: '',
           receiver: '',
@@ -108,13 +115,36 @@
         formLabelWidth: '120px',
       }
     },
+    computed: {
+      tableData() {
+        return this.$store.getters.packagesList;
+      }
+    },
+    mounted() {
+      this.initDatas();
+    },
     methods: {
-      filterTag(value, row) {
-        return row.status === value;
-      },
       addPackage() {
         this.dialogFormVisible = false;
-
+        this.$store.dispatch('addPackages',this.form);
+      },
+      initDatas() {
+        this.$store.dispatch('getPackages');
+      },
+      showAll() {
+        this.initDatas();
+      },
+      filterNotTake() {
+        this.$store.dispatch('getNotTakePackage');
+      },
+      filterTake() {
+        this.$store.dispatch('getTakePackage');
+      },
+      filterBooked() {
+        this.$store.dispatch('getBookedPackage');
+      },
+      confirmReceived(index,item){
+        this.$store.dispatch('updatePackage', item);
       }
     }
   }
