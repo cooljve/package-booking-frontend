@@ -42,22 +42,7 @@
             <el-button
               size="mini"
               type="primary"
-              @click="filterAll(scope.$index, scope.row)">All
-            </el-button>
-            <el-button
-              size="mini"
-              type="primary"
-              @click="filterBooked(scope.$index, scope.row)">已预约
-            </el-button>
-            <el-button
-              size="mini"
-              type="primary"
-              @click="filterTake(scope.$index, scope.row)">已取件
-            </el-button>
-            <el-button
-              size="mini"
-              type="primary"
-              @click="filterNotTake(scope.$index, scope.row)">未取件
+              @click="dialogFormVisible=true">添加
             </el-button>
           </template>
           <template slot-scope="scope">
@@ -69,6 +54,26 @@
           </template>
         </el-table-column>
       </el-table>
+      <el-dialog title="包裹入库" :visible.sync="dialogFormVisible" center>
+        <el-form :model="form">
+          <el-form-item label="运单号" :label-width="formLabelWidth">
+            <el-input style="width: 200px;" v-model="form.orderNumber" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="收件人" :label-width="formLabelWidth">
+            <el-input style="width: 200px;" v-model="form.receiver" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="电话" :label-width="formLabelWidth">
+            <el-input style="width: 200px;" v-model="form.phone" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="重量" :label-width="formLabelWidth">
+            <el-input style="width: 200px;" v-model="form.weight" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="addPackage">添加</el-button>
+        </div>
+      </el-dialog>
     </el-main>
   </el-container>
 </template>
@@ -78,6 +83,7 @@
     name: "Manager",
     data() {
       return {
+        dialogFormVisible: false,
         tableData: [
           {
             orderId: 1,
@@ -92,17 +98,28 @@
           {text: '未取件', value: 1},
           {text: '已预约', value: 2},
           {text: '未预约', value: 3},
-          ],
+        ],
+        form: {
+          orderNumber: '',
+          receiver: '',
+          phone: '',
+          weight: '',
+          status: '未取件'
+        },
+        formLabelWidth: '120px',
       }
     },
-    methods:{
+    methods: {
       filterTag(value, row) {
         return row.status === value;
       },
+      addPackage() {
+        this.dialogFormVisible = false;
+
+      }
     }
   }
 </script>
 
 <style scoped>
-
 </style>
