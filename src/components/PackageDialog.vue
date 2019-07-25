@@ -1,6 +1,6 @@
 <template>
   <el-dialog title="包裹入库" :visible.sync="visiable" center :before-close="closeDialog">
-    <el-form ref="form" :model="form" :rules="addPackageRules"  style="width: 50%;margin: auto">
+    <el-form ref="form" :model="form" :rules="addPackageRules" style="width: 50%;margin: auto">
       <el-form-item label="运单号" prop="orderNumber" :label-width="formLabelWidth">
         <el-input v-model="form.orderNumber" autocomplete="off"></el-input>
       </el-form-item>
@@ -36,22 +36,39 @@
           weight: '',
           status: '未取件'
         },
-        addPackageRules:{
-
+        addPackageRules: {
+          orderNumber: [
+            {required: true, message: '请输入订单号', trigger: 'blur'},
+          ],
+          receiver: [
+            {required: true, message: '请输入收件人', trigger: 'blur'}
+          ],
+          phone: [
+            {required: true, message: '请输入电话号码', trigger: 'blur'}
+          ],
+          weight: [
+            {required: true, message: '请输入重量', trigger: 'blur'}
+          ],
         },
         formLabelWidth: '120px',
       }
     },
     methods: {
       addPackage() {
-        let item ={};
-        item.orderNumber = this.form.orderNumber;
-        item.receiver = this.form.receiver;
-        item.phone = this.form.phone;
-        item.weight = this.form.weight;
-        item.status = this.form.status;
-        this.$store.dispatch('addPackages', item);
-        this.closeDialog();
+        this.$refs['form'].validate((valid) => {
+          if (valid) {
+            let item ={};
+            item.orderNumber = this.form.orderNumber;
+            item.receiver = this.form.receiver;
+            item.phone = this.form.phone;
+            item.weight = this.form.weight;
+            item.status = this.form.status;
+            this.$store.dispatch('addPackages', item);
+            this.closeDialog();
+          } else {
+            return false;
+          }
+        });
       },
       closeDialog() {
         this.$refs['form'].resetFields();
