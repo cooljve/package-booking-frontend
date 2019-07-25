@@ -3,27 +3,33 @@
     <el-main>
       <el-table
         :data="tableData"
-        style="width: 100%"
-        height="500">
+        style="width: 70%;margin: auto;"
+        height="500"
+        :row-class-name="tableRowClassName">
         <el-table-column
           label="运单号"
-          prop="orderNumber">
+          prop="orderNumber"
+          width="180">
         </el-table-column>
         <el-table-column
           label="收件人"
-          prop="receiver">
+          prop="receiver"
+          width="180">
         </el-table-column>
         <el-table-column
           label="电话"
-          prop="phone">
+          prop="phone"
+          width="180">
         </el-table-column>
         <el-table-column
           label="状态"
-          prop="status">
+          prop="status"
+          width="180">
         </el-table-column>
         <el-table-column
           label="预约时间"
-          prop="bookDate">
+          prop="bookDate"
+          width="200">
         </el-table-column>
         <el-table-column
           align="right">
@@ -68,16 +74,18 @@
           </template>
         </el-table-column>
       </el-table>
-      <package-dialog :visiable="dialogFormVisible" @changeDialogVisiable="changeDialogVisiable($event)"></package-dialog>
+      <package-dialog :visiable="dialogFormVisible"
+                      @changeDialogVisiable="changeDialogVisiable($event)"></package-dialog>
     </el-main>
   </el-container>
 </template>
 
 <script>
-import PackageDialog from '../components/PackageDialog'
+  import PackageDialog from '../components/PackageDialog'
+
   export default {
     name: "Manager",
-    components:{PackageDialog},
+    components: {PackageDialog},
     data() {
       return {
         dialogFormVisible: false,
@@ -92,7 +100,6 @@ import PackageDialog from '../components/PackageDialog'
       this.initDatas();
     },
     methods: {
-
       initDatas() {
         this.$store.dispatch('getPackages');
       },
@@ -108,18 +115,32 @@ import PackageDialog from '../components/PackageDialog'
       filterBooked() {
         this.$store.dispatch('getBookedPackage');
       },
-      confirmReceived(index,item){
+      confirmReceived(index, item) {
         this.$store.dispatch('updatePackage', item);
       },
-      disabledConfirmButton(item){
+      disabledConfirmButton(item) {
         return item.status === '已取件';
       },
       changeDialogVisiable(flag) {
         this.dialogFormVisible = flag;
+      },
+      tableRowClassName({row, rowIndex}) {
+        if (rowIndex % 2 === 0) {
+          return 'warning-row';
+        } else {
+          return 'success-row';
+        }
       }
     }
   }
 </script>
 
 <style scoped>
+  .el-table .warning-row {
+    background: oldlace;
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
 </style>

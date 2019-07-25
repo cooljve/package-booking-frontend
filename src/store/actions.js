@@ -17,6 +17,7 @@ const actions = {
         dispatch('getPackages');
       }).catch(err => {
       console.log(err);
+      alert("订单创建失败，请确认您所输入的各项数值正确。");
     });
   },
   getNotTakePackage({commit}) {

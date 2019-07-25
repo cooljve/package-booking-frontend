@@ -44,7 +44,13 @@
     },
     methods: {
       addPackage() {
-        this.$store.dispatch('addPackages', this.form);
+        let item ={};
+        item.orderNumber = this.form.orderNumber;
+        item.receiver = this.form.receiver;
+        item.phone = this.form.phone;
+        item.weight = this.form.weight;
+        item.status = this.form.status;
+        this.$store.dispatch('addPackages', item);
         this.closeDialog();
       },
       closeDialog() {
