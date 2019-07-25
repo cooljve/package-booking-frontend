@@ -61,7 +61,8 @@
             <el-button
               style="margin-top: 10px;"
               type="primary"
-              @click="dialogFormVisible=true">添加
+              icon="el-icon-plus" circle
+              @click="dialogFormVisible=true">
             </el-button>
           </template>
           <template slot-scope="scope">
@@ -137,7 +138,7 @@
 
 <style scoped>
   .el-table .warning-row {
-    background: oldlace;
+    background: orange;
   }
 
   .el-table .success-row {

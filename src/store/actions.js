@@ -16,8 +16,7 @@ const actions = {
       .then(res => {
         dispatch('getPackages');
       }).catch(err => {
-      console.log(err);
-      alert("订单创建失败，请确认您所输入的各项数值正确。");
+      alert(err.response.data);
     });
   },
   getNotTakePackage({commit}) {
@@ -52,13 +51,12 @@ const actions = {
     });
   },
   patchPackage({dispatch, commit}, bookOrder) {
-    debugger;
     axios.patch(`${baseUrl}/manage/packages/${bookOrder.orderNumber}`, bookOrder.bookDate)
       .then(res => {
         alert("预约成功");
         dispatch('getPackages');
       }).catch(err => {
-      alert("运单号不存在或已取件，请重新输入。");
+      alert(err.response.data);
     });
   },
 };
