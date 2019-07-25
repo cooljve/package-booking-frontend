@@ -43,6 +43,7 @@
       },
       onSubmit() {
         this.$store.dispatch('patchPackage', this.bookOrder);
+        this.resetForm();
       }
     }
   }
